@@ -1,0 +1,2525 @@
+---
+title: "6242lesson1"
+output: html_document
+---
+facors
+```{r}
+current.season= factor("fall", levels=c("summer","fall","winter","spring"), ordered=TRUE)
+
+current.season= factor(levels=c("summer","fall","winter","spring"), ordered=TRUE)
+current.season
+
+?factor
+#Remember that factors are variables that can only contain a limited number of different values. As such, they are often called categorical variables.
+
+```
+this is how to use factors
+```{r}
+schtyp = sample(0:1, 20, replace = TRUE)
+schtyp
+is.factor(schtyp)
+is.numeric(schtyp)
+schtyp.f = factor(schtyp, labels = c("private", "public"))
+schtyp.f
+
+mtcars
+str(mtcars)
+mtcars$cyl
+mtcars$cyl.f = factor(mtcars$cyl, labels=c("low","median","high"))
+mtcars$cyl.f
+
+```
+
+
+
+```{r}
+help(mtcars)
+help(qqplot)
+help("qqplot")
+ls()
+
+save.image(file= "R_workspace")
+ggplot(aes(mtcars$gear,mtcars$mpg), data=mtcars)+
+  geom_smooth()
+getwd()
+setwd("/home/yanyan/Desktop/R")
+save.image(file= "R_workspace")
+save(q,q,file="R_workspace")
+rm(list=ls(all=TRUE))
+load("R_workspace")
+
+a=TRUE
+b=as.numeric(a)
+b
+
+
+rm(list=ls(all=TRUE)) # remove all the things in the enviroments
+x=c(4,3,3,4,3,1)
+x
+length(x)
+
+
+y=vector(mode="logical", length=4)
+y
+
+z=vector(mode='numeric',length=3)
+z
+
+z1=vector(mode='character',length=3)
+z1
+```
+quiz 2
+```{r}
+q=rep(3.2,times=10)
+q
+?seq
+# very important for creating grids
+w=seq(0,1,length.out=11)  #the starting and (maximal) end values of the sequence. 
+m = seq(0,1,by=0.1)  #by number: increment of the sequence.
+w==m
+
+```
+comparison commands quiz
+```{r}
+w<=0.5 # returns boolean vector
+any(w<=0.5) # check if there is some elevement smaller than a threshold
+all(w<=0.5) # check if all elements are smaller than a threshold
+which(w<=0.5) # returns the index
+w[which(w<=0.5)]
+w[w<=0.5]
+
+w[which(w<=0.5)]==w[w<=0.5]
+```
+extracting entries
+```{r}
+c=w[w<=0.5]
+c=w[c(TRUE,TRUE,TRUE,TRUE ,TRUE ,TRUE,FALSE,FALSE,FALSE,FALSE,FALSE)]
+c
+w<=0.5
+d=w[which(w<=0.5)]
+d
+c==d
+
+subset(w,w<=0.5)
+w[w<=0.5]=0
+w
+# notice the obatined w has the first 6 value of 0.0, rather than 0
+```
+create array quiz
+```{r}
+z=seq(1,20,length.out=20)
+x=array(data=z, dim=c(4,5))
+x=array(data=z, dim=c(5,5))
+x
+# notice, it fills coloumn by coloumn
+?array
+
+x[-1,] # take all rows, except the speficied row
+# get rid of the first row
+# the negative index means take all rows except the specified row
+
+# **************************************
+# did not quite understand the below
+# now get, get from x the first two column and the first two rows
+# creating new array y, which is extracted from the old array,specifically, the first two rows, and the first two column)
+y=x[c(1,2),c(1,2)]
+x
+y
+
+y%*%y
+```
+inner producet?
+```{r}
+#%*% means matrix multiplcation
+#************************************************
+y%*%y
+
+```
+
+transpose?
+```{r}
+x
+x[1,]%*%x[1,]  # inner product between two vectors
+t(x)
+```
+
+
+
+#innder product????
+#matrix multiplication operator. If you give it two vectors, it will coerce them to (logical) 1-row & a 1-col matrix and multiply them.
+```{r}
+x
+x[1,]%*%x[1,]
+
+```
+what is outer product?
+```{r}
+x
+outer(x[,1], x[,1])
+?outer
+
+```
+
+
+
+# rbind
+```{r}
+x
+x[1,]  # first row
+
+rbind(x[1,], x[1,]) 
+# rbind concatenate the two vectors as rows, r stands for row or rowbin
+# cbind means column bind
+```
+
+about list
+```{r}
+L=list(name='John', age=55, no.children=2, children.ages =c(15,18))
+L[2]
+L[[4]][2]
+L[[4]]
+L$children.ages[2]
+L$children.ages[2]==L[[4]][2]
+names(L)
+L[[2]]
+L["age"]==L[[2]] # this is wrong
+L["age"]
+L[[2]]=100  # change the value of 55 to 100
+L
+typeof(L["age"]) # this is list
+typeof(L[[2]])  # this is double
+
+names(mtcars)
+ttt=table(mtcars$cyl.f)
+names(ttt)
+order(mtcars$cyl.f)
+mtcars$cyl[order(mtcars$cyl.f)]
+mtcars$cyl[order(mtcars$cyl)]
+```
+dataframe
+```{r}
+vecn = c("a","b","c")
+veca = c(43,33,23)
+vecs = c(500,600,700)
+R=data.frame(n=vecn, a=veca,s=vecs)
+R
+
+names(R) = c("d","e","f")
+R
+
+```
+
+
+IRIS data 
+```{r}
+help(iris)
+data(iris)
+names(iris)
+head(iris,4)
+head(iris,1)
+iris[1]
+# get all the sepal.length
+help(iris)
+
+a<-iris[1]
+
+
+a=iris$Sepal.Length[1]
+a
+dim(a)
+b=iris$Sepal.Length
+b
+dim(b)
+#For an array (and hence in particular, for a matrix) dim retrieves the dim attribute of the object. It is NULL or a vector of mode integer.
+
+typeof(b)
+
+?dim
+```
+
+use the data column without meantion that it is from iris
+```{r}
+attach(iris, warn.conflicts=FALSE)
+head(iris)
+Species[1]
+
+# mean of all four numeric columns
+colMeans(iris[,1:4])
+mean(iris$Sepal.Length)
+b=subset(iris,iris$Sepal.Length<5 & iris$Species=="setosa")
+
+dim(b)[1]
+dim(subset(iris,iris$Species=="setosa"))[1]  # when use subset, the iris shoud not be omited
+
+head(iris,5)
+
+iris[1].mean() + iris[2].mean() + iris[3].mean()+iris[4].mean()
+
+iris.subset <- iris[which(iris$Species =="Setosa" & iris$Sepal.Length<5),]
+
+dim(iris.subset)
+
+iris.subset
+
+```
+Check your command to find the average the sepal length.
+```{r}
+#this is not right
+#iris$Sepal.Length.mean()
+#this is the correct one
+mean(iris$Sepal.Length)
+```
+
+Check your command to find the mean of all four columns.
+```{r}
+#this is not right
+iris[1].mean() + iris[2].mean() + iris[3].mean()+iris[4].mean()
+#this is not right either, argument is not numeric or logical: returning NA
+mean(mean(iris[1])+mean(iris[2])+mean(iris[3])+mean(iris[4]))
+# this is the correct one
+colMeans(iris[,1:4])
+```
+
+create a subset of sepal length. 
+```{r}
+#get a subset, two methods
+#this one works, notice the capilization
+a<-subset(iris,iris$Sepal.Length<5 & Species =='setosa')
+dim(a)
+attach(iris)
+b<-iris[which(iris$Sepal.Length<5 & Species =='setosa'),]
+dim(b)
+```
+
+
+get the number of rows corresponding to setosa species.
+```{r}
+subset(iris, Species =='setosa')
+dim(subset(iris, Species =='setosa'))[1]
+
+```
+
+loop
+if-else
+```{r}
+a=10; b=5; c=1
+if(a<b) {
+  d=1
+} else if(a==b){
+  d=2
+} else {
+  d=3
+}
+
+print(d)
+
+```
+
+
+
+```{r}
+#The format for a 'for' loop in R is:
+for(i in 1:100){
+   print("Hello World")
+    print(i*i)
+}
+
+#Everything in the curly braces is executed 100 times. 
+#Write a 'for' loop that adds the numbers (num) 1 to 100 and 
+#stores it in a variable called 'sum'.
+
+total = function(n){
+    sum = 0
+    
+    for(i in 1:100){
+    sum=sum+i}
+    print(sum)
+    return(sum)
+}
+total(100)
+
+#can also be
+total = function(n){
+    sum = 0
+    
+    for (num in seq(1,100,by=1)){
+    sum=sum+i}
+    print(sum)
+    return(sum)
+}
+total(100)
+
+```
+another R loop
+```{r}
+#A repeat loop in 'R' has the format:
+repeat{
+   x = x+1
+   if(x == 6){
+       break
+   }
+}
+#A repeat loop must use a break statement to exit the loop.
+
+#Using a repeat loop, write an 'R' program that 
+#subtracts the numbers (num) 100 to 1 from a variable called sum.
+#If the sum becomes '0' or less, exit the repeat loop. 
+#Use a variable called 'num' for the numbers and 'sum' for the sum.
+
+#why total(200) the loop does not stop? the print detail seems to work 
+total = function(n){
+    sum = 5050
+    num = n
+
+    repeat{ 
+    sum = sum-num
+    num=num-1
+    print (sum)
+    print (num)
+    if (sum <=0)
+    {break}
+    }
+    return(sum)
+}
+total(200)
+
+```
+R while loop
+```{r}
+#while(test expression){
+ #    statement
+#}
+
+#For example:
+while (i< 6) {
+   print(i)
+   i = i + 1
+}
+
+#Given two variables (a,b) and a sum=0, write a while loop to
+#perform the following task:
+
+#While b>a, increment the variables sum and 'a' and decrement the variable 'b'.
+#a = 1, b = 10
+
+total = function(){
+    sum = 0
+    a = 1
+    b = 10
+    
+    while(a<b) {
+    sum=sum+1
+    a=a+1
+    b=b-1
+    }
+    
+    return (sum)
+    }
+
+total()
+```
+function in R
+```{r}
+myPower = function(
+  bas=10, pow=2){
+  res=bas^pow
+  return (res)
+  }
+myPower(2,3)
+myPower(pow=3,bas=2)
+myPower(bas=3)
+```
+loop code can be slow
+```{r}
+a=1:10000000; res=0
+system.time(for(e in a) res=res+e^2)
+```
+vectorized code
+```{r}
+system.time(sum(a^2))
+```
+debug1
+```{r}
+#This file illustrates some basics of R.  
+
+#Please read the code and the comments, then experiment with the code to test 
+#any points that remain unclear.  When you  finished experimenting, remove any
+#code that generates errors and click submit.
+
+#R does not have strong typing
+a = 3.2
+a = "a string"
+
+#A newline or semicolon mark the end of a statement
+print("The variable 'a' stores:"); print(a)
+
+#stopifnot can be used like an assert statement
+stopifnot(a == "a string");
+stopifnot(TRUE || FALSE)
+stopifnot(!(TRUE && FALSE))
+
+#If-else statements are similar to the conventions of C/C++, Java, javascript,
+a = 10; b = 5; c = 1
+if (a < b){
+  d = 1
+}else if (a == b){ #having the } and the else on the same line is essential.
+  d = 2
+}else{
+  d = 3
+}
+d
+stopifnot(d==3)
+
+#while loops
+sum = 0
+i = 1
+while(i <= 10){
+  sum = sum + i
+  i = i + 1
+}
+print (sum)
+stopifnot(sum==55)
+
+#Functions are first-class objects, as reflected in the syntax
+mySum = function(a,b){
+  return(a + b)
+}
+mySum(2,2)
+stopifnot(mySum(2,2) == 4)
+
+#R supports named parameters and default values
+myPower = function(bas = 10, pow = 4){
+  return(bas^pow)
+}
+myPower(2,3)
+myPower(pow=3,bas=10)
+myPower(2,4)
+stopifnot(myPower(2,3) == 8)
+#in the original data, the following was wrong
+stopifnot(myPower(pow = 3, bas = 10) == 59049)
+stopifnot(myPower(bas = 2) == 16)
+```
+R vector
+
+```{r}
+#This file illustrates the basic usage of vectors in R
+
+#Please read the code and the comments, then experiment with the code to test 
+#any points that remain unclear.  When you are finished experimenting, **********remove/fix******** any
+#code that generates errors and click submit.
+
+#The simplest container in R is the vector.
+x = vector(mode="numeric",length=3)
+x
+?vector
+
+#The c function concatenates its arguments into a vector.
+y = c(4,3,3)
+
+#The default value for the numeric mode is zero
+# note that == is used to see if two vectors are the same
+x==c(0,0,0)
+stopifnot( x == c(0,0,0))
+
+#The length function gives the length of a vector
+length(y)
+stopifnot(length(y) == 3)
+
+#Individual elements can be accessed using 1-based indexing, value can be changed
+x[1] = 2
+x[3] = 1
+x
+stopifnot( x == c(2,0,1) )
+
+#Standard arithmetic operators can used for vectors
+a = 2*x + y
+a
+#in the origial file, c(8,3,4) was wrong, should be c(8,3,5)
+stopifnot( a == c(8,3,5) )
+
+a = a - 1
+a
+# in the orignal file c(7,2,3) was wrong, should be c(7,2,4)
+stopifnot( a == c(7,2,4) )
+
+#Boolean-valued operators produce logical vectors
+a>=7
+a==2
+stopifnot( (a>=7) == c(TRUE,FALSE,FALSE))
+stopifnot( (a==2) == c(FALSE,TRUE,FALSE))
+
+#Logical vectors and vectors of indices can used to select 
+#a subset of entries in a vector
+mask = c(TRUE,FALSE,TRUE)
+a
+a[mask]
+#in the orignal file, c(7,3) was wrong, should be c(7,4)
+stopifnot( a[mask] == c(7,4) )
+
+indices = c(1,3)
+indices
+a[indices]
+stopifnot( a[indices] == c(7,4))
+
+#Negative indices cause elements to be excluded
+
+a[c(-1,-3)]
+a
+c(2)
+stopifnot( a[c(-1,-3)] == c(2) )
+
+#The any, all, and which methods have the intuitive meanings when applied
+#to logical vectors
+
+any(c(FALSE,TRUE,FALSE))
+
+all(c(TRUE,TRUE,TRUE))
+
+which(c(TRUE,FALSE,TRUE))
+which(c(TRUE,FALSE,TRUE)) == c(1,3)
+
+#Various helper methods for initializing vectors are available
+b = rep(3.2, times=5)
+b
+b = c(3.2, 3.2, 3.2, 3.2, 3.2)
+all.equal(b,c)
+#[1] "Numeric: lengths (5, 6) differ"????????????????????????????/
+stopifnot( all.equal(b,c))
+?all.equal()
+
+w = seq(0,3)
+?seq
+w
+w == c(0,1,2,3)
+stopifnot(w == c(0,1,2,3))
+
+#x = seq(0,1,by=0.2)
+x = seq(0.0,1.0,by=0.2)
+x
+#Hint: You may have to change the comparison statement
+#STILL DID NOT GET IT
+x == c(0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
+stopifnot(x == c(0.0, 0.2, 0.4, 0.6, 0.8, 1.0))
+
+y = seq(0,1,length.out=3)
+y
+y == c(0.0, 0.5, 1.0)
+# change x to y
+y == c(0.0, 0.5, 1.0)
+y
+stopifnot( x == c(0.0, 0.5, 1.0) )
+
+z = 1:10
+z
+stopifnot(z == seq(1,10,by=1))
+z == seq(1,10,by=1)
+#for each loops can loop over the elements of a vector
+
+sum = 0
+for(i in z){
+	sum = sum + i
+	i<=10
+}
+sum == 55
+stopifnot(sum == 55)
+
+#Vectors are passed by value
+x = 1:10
+f = function(a){
+	a[1] = 10
+}
+f(x)
+x
+
+stopifnot(x == 1:10)
+
+
+```
+
+R array
+```{r}
+#This file illustrates the usage of multidimensional arrays in R
+#Please read the code and the comments, then experiment with the code to test 
+#any points that remain unclear.  When you  finished experimenting, *******remove/fix******** any
+#code that generates errors and click submit.
+
+#Arrays are the multidimensinal generalization of vectors.
+x = array(data = 1:6, dim = c(2,3))
+
+row_names = c("row1","row2")
+col_names = c("col1","col2","col3")
+dimnames(x) = list(row_names, col_names)
+x
+
+
+#?array
+x
+y=matrix(data=1:6, nrow=2, ncol=3)
+y
+x==y  # array and matrxi are the same, but matrix is limited to 2 dimentions # dimnames are optional
+?matrix
+z=matrix(data=1:6, nrow=2, ncol=3, byrow=TRUE)  #only matrix has the byrow option
+z
+
+row_names = c("row1","row2")
+col_names = c("col1","col2","col3")
+dimnames(x) = list(row_names, col_names)
+
+# notice it fills the array by columns!!!!
+#R uses column-major format
+print(x)
+#      [,1] [,2] [,3]
+# [1,]    1    3    5
+# [2,]    2    4    6
+
+#Single indices can be used into multidimentional arrays.
+#Left indices are less significant.
+x[2] 
+
+x[1] == x[1,1] 
+x[2] == x[2,1] 
+x[3] == x[1,2] 
+x[4] == x[2,2] 
+x[5] == x[1,3]
+x[6] == x[2,3]
+
+stopifnot( x[1] == x[1,1] )
+stopifnot( x[2] == x[2,1] )
+stopifnot( x[3] == x[1,2] )
+stopifnot( x[4] == x[2,2] )
+stopifnot( x[5] == x[1,3] )
+stopifnot( x[6] == x[2,3] )
+
+#Index and logical selection can be used to select subarrays
+subx = x[c(1,2),c(TRUE,TRUE,FALSE)]
+subx
+subx == array(data = 1:4, dim = c(2,2))
+stopifnot(subx == array(data = 1:4, dim = c(2,2)))
+
+#Refer to an entire row or column by not specifiying anything
+row1 = x[1,]
+x
+row1 == c(1,3,5)
+stopifnot( row1 == c(1,3,5) )
+col3 = x[,3]
+col3 == c(5,6)
+# this is the bug, should be double equal sign
+stopifnot( col3 == c(5,6) )
+
+#* is for element-by-element multiplication
+#note this is ELMENT BY ELMENT multiplication, not matrix multiplcation
+x
+x2 = x * x
+x2
+
+x2[1,1] == x[1,1]*x[1,1]
+x2[2,1] == x[2,1]*x[2,1]
+x2[1,2] == x[1,2]*x[1,2] 
+x2[2,2] == x[2,2]*x[2,2]
+x2[1,3] == x[1,3]*x[1,3]
+x2[2,3] == x[2,3]*x[2,3] 
+
+stopifnot( x2[1,1] == x[1,1]*x[1,1] )
+stopifnot( x2[2,1] == x[2,1]*x[2,1] )
+stopifnot( x2[1,2] == x[1,2]*x[1,2] )
+stopifnot( x2[2,2] == x[2,2]*x[2,2] )
+stopifnot( x2[1,3] == x[1,3]*x[1,3] )
+stopifnot( x2[2,3] == x[2,3]*x[2,3] )
+
+#t is for transpose
+xt = t(x)
+xt
+x
+x[1,3] == xt[3,1]
+x[1,2] == xt[2,1]
+stopifnot(x[1,3] == xt[3,1])
+stopifnot(x[1,2] == xt[2,1])
+
+#%*% is for matrix multiplication
+M = x %*% xt
+M
+array(data=c(35,44,44,56), dim=c(2,2))
+stopifnot( M == array(data=c(35,44,44,56), dim=c(2,2)) )
+
+c(1,1,1) %*% x[1,]
+x[1,]
+c(1,1,1) %*% x[1,] == 1 + 3 + 5 
+#%*% will also take the inner product of vectors
+stopifnot( c(1,1,1) %*% x[1,] == 1 + 3 + 5 )
+
+#Matrices can also be formed by outer product
+#STILL VERY CONFUSED about outer product
+M = outer(c(1,2), c(1,2,3))
+# the first row will be 1*1 1*2 1*3
+# the second row will be 2*1 2*2 2*3
+print(M)
+# the output is wrong
+#      [,1] [,2] [,3]
+# [1,]    1    3    5
+# [2,]    2    6   10
+
+# it shoud be this
+#      [,1] [,2] [,3]
+# [1,]    1    2    3
+# [2,]    2    4    6
+
+
+#Matrices can also be stacked rowwise
+x
+rbind(x,x)
+print(M)
+# why print(M), this M has not be signed to anything yet
+#      [,1] [,2] [,3]
+# [1,]    1    3    5
+# [2,]    2    4    6
+# [3,]    1    3    5
+# [4,]    2    4    6
+
+#Or they can be concatenated columnwise
+cbind(x,x)
+print(M)
+#      [,1] [,2] [,3] [,4] [,5] [,6]
+# [1,]    1    3    5    1    3    5
+# [2,]    2    4    6    2    4    6
+
+
+```
+R functions
+```{r}
+firstSquares = function(n){
+
+  return (n^2)
+
+}
+print (firstSquares(3))
+
+```
+
+```{r}
+#Implement functions below avoiding the use of for loops wherever possible.
+#Please read the code and the comments, then experiment with the code to test 
+#any points that remain unclear.  When you  finished experimenting,
+##*******remove/fix any*******
+#code that generates errors and click submit.
+
+
+#Returns a vector containing the first n squares, i.e. c(1, 4, 9, ... n^2)
+firstSquares = function(n){
+  x = vector(mode="numeric", length=n)
+  for (i in 1:n){
+  x[i] = i^2}
+  return (x)
+}
+firstSquares(3)
+print (firstSquares(3))
+firstSquares(3) == c(1,4,9)
+stopifnot(firstSquares(3) == c(1,4,9))
+```
+
+
+```{r}
+#Returns a logical vector indicating the elements which fall more than 
+#two standard deviations from the mean.  (You may use R's mean and sd
+#and abs functions if you like.)
+extremes = function(x){
+  m = mean(x)
+  s = sd(x)
+  y1= m-2*s
+  y2= m+2*s
+  print (x)
+  return (x>y2)
+}
+x = c(1.72, -0.01, 0.33,  1.06,  -0.31, 1.35, 0.36, 0.61, 0.35, 10.0)
+extremes(x)
+
+x = c(1.72, -0.01, 0.33,  1.06,  -0.31, 1.35, 0.36, 0.61, 0.35, 10.0)
+
+extremes(x) == c(rep(c(FALSE), times=9), TRUE)
+stopifnot( extremes(x) == c(rep(c(FALSE), times=9), TRUE))
+c(rep(c(FALSE), times=9), TRUE)
+
+```
+
+
+
+R LIST playground
+
+
+```{r}
+#This file illustrates the basic usage of lists in R
+
+#Please read the code and the comments, then experiment with the code to test 
+#any points that remain unclear.  When you  finished experimenting,
+#********remove/fix any********
+#code that generates errors and click submit.
+
+#A list is a powerful container that has the capabilities of several
+#more classical containers.
+
+#Unlike vectors it can contain elements of different types
+# NOTE both vectors and list can contain different types of elements
+x = list("Isaac", "Newton", 1643L, 1727L)
+
+# the type of the first list x is character
+#To select a single element, use the [[]] operator
+typeof(x[[1]]) == "character"
+x[1]
+stopifnot(typeof(x[[1]]) == "character")
+x[[1]] == "Isaac"
+stopifnot( x[[1]] == "Isaac")
+
+#The operator [] returns a list even when a single element is selected.
+# NOTE the above, this is a strange thing to me
+print (x[1])
+# [[1]]
+# [1] "Isaac"
+typeof(x[1]) == "list"
+stopifnot( typeof(x[1]) == "list" )
+?as.character
+as.character(x[1]) == as.character(list("Isaac"))
+stopifnot( as.character(x[1]) == as.character(list("Isaac")))
+
+#Positions are often named like so
+x = list(first_name = "Isaac", last_name = "Newton", birth_year = 1643L, death_year = 1727L)
+
+#The names function returns the names of the fields as a vector
+names(x)
+?name
+names(x) == c('first_name', 'last_name', 'birth_year', 'death_year')
+
+#With named positions, lists behave like dictionaries (a.k.a symbol tables)
+x[['first_name']] == "Isaac"
+x['first_name']
+
+ x[['first_name']] == "Isaac"
+
+print (x['first_name'])
+# $last_name
+# [1] "Newton"
+# there is a bug in the original file
+as.character(x['last_name']) == as.character(list(last_name = "Newton"))
+as.character(x['last_name'])
+as.character(list(last_name = "Newton"))
+stopifnot( as.character(x['last_name']) == as.character(list(last_name = "Newton")))
+
+x   # use vector to select the component
+years = c("birth_year", "death_year")
+x[years]  
+#$birth_year
+# [1] 1643
+
+# $death_year
+# [1] 1727
+x[years]
+as.character(x[years]) == as.character(list(birth_year = 1643L, death_year = 1727L))
+as.character(x[years])
+as.character(list(birth_year = 1643L, death_year = 1727L))
+stopifnot( as.character(x[years]) == as.character(list(birth_year = 1643L, death_year = 1727L)) )
+
+#for each loops can loop over the elements of a list
+
+acc = c(x)
+acc
+typeof(acc)
+
+for(i in x){
+  print(i)
+	bcc = c(acc,as.character(i))
+}
+
+bcc
+
+acc == c("Isaac", "Newton", "1643", "1727")
+acc
+
+acc
+stopifnot(acc == c("Isaac", "Newton", "1643", "1727"))
+
+
+
+acc = c()
+bcc=c(1,2)
+typeof(acc)
+typeof(bcc)
+
+x  # x is list, the list is very much like a dictionary
+for(i in x){
+  print(typeof(i))
+	acc = c(acc,as.character(i))
+}
+
+for (name in names(x)) {
+    print(name)
+    print(x[[name]])
+}
+
+acc
+acc == c("Isaac", "Newton", "1643", "1727")
+```
+
+R data frame playground
+```{r}
+#This file illustrates the basic usage of dataframes in R
+
+#Please read the code and the comments, then experiment with the code to test 
+#any points that remain unclear.  When you  finished experimenting,
+
+#*****remove/fix any*****
+#code that generates errors and click submit.
+#A dataframe is an ordered sequence of lists all having the same length and 
+#field names.  It is akin to a spreadsheet.
+
+#Typically dataframes are read in from files. E.g.
+#df = read.table("foo.csv", header = TRUE)
+#but for this example we'll use mtcars
+#a built-in dataframe useful for tutorials
+#See help(mtcars) for details
+
+#You can preview the first few rows with the head command
+head(mtcars)
+#                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+# Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+# Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+# Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+# Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+# Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+# Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
+
+#nrow and ncol give the number of rows and columns respectively
+ncol(mtcars) == 11
+nrow(mtcars) == 32 
+
+stopifnot( ncol(mtcars) == 11 )
+stopifnot( nrow(mtcars) == 32 )
+
+#names gives the names of the fields
+names(mtcars)
+names(mtcars) = c("mpg", "cyl", "disp", "hp", "drat", "wt", "qsec", "vs", "am", "gear", "carb")
+
+
+#row.names gives the names of the rows
+?row.names()
+row.names(mtcars)
+typeof(row.names(mtcars))
+row.names(mtcars)[1:3] 
+
+typeof(row.names(mtcars)[1:3] )
+
+#there is a bug in the original file it should be Mazda RX4 Wag, instead of Mazda RX4
+row.names(mtcars)[1:3]
+row.names(mtcars)[1:3] == c("Mazda RX4", "Mazda RX4", "Datsun 710")
+
+a = c("Mazda RX4", "Mazda RX4", "Datsun 710") 
+typeof(a)
+b="tttt"
+typeof(b)
+
+d=c(5,6,7)
+typeof(d)
+
+d1=5
+typeof(d1)
+
+#The [[]] operator with a field name returns the VECTOR of values in that column
+mtcars[[2]] # this line the line below are the same, this the the double vector
+mtcars$cyl
+typeof(mtcars$cyl)
+typeof(mtcars[[2]])
+mtcars[[2]]==mtcars$cyl
+
+dim(mtcars[[2]])
+dim(mtcars$cyl)
+
+mtcars[[2]]
+mtcars[["cyl"]]
+
+mtcars["cyl"]
+
+typeof(mtcars["cyl"])  # list
+typeof(mtcars[["cyl"]])  # double array
+
+reduced= mtcars[1:3,]
+reducedcyl= reduced[["cyl"]]
+reducedcyl
+reducedcyl == c(6,6,4)
+
+dim(mtcars["cyl"])
+
+#********************************************
+mtcars
+mtcars[[2]][[1]]
+
+# the above is the same as 
+cyl = mtcars[[2]] 
+length(cyl)
+cyl[[1]]
+cyl[1]
+typeof(cyl[[1]])
+typeof(cyl[1])
+
+cyl[[1]] ==cyl[1]  # for a vector, this is the same
+
+# also the same as 
+cyl2 = mtcars[["cyl"]]
+cyl2==cyl
+#*******************************************************
+
+cyl[[1]]
+stopifnot( cyl[[1]] == 6 ) #cyl is a vector whose first value is 6
+
+names(mtcars)
+mpg = mtcars[['mpg']]
+mtcars$mpg ==mtcars[[1]]
+mpg[1]
+mpg[[1]]
+mpg[1]==mpg[[1]]
+typeof(mpg[[1]])
+mpg==mtcars$mpg
+mpg[[1]]
+stopifnot( mpg[[1]] == 21.0 ) #mpg is a vector whose first value is 21.0
+
+#The [] operator with a single argument returns a column slice, i.e. a new dataframe 
+#that only includes the selected columns.
+mtcars[4] # select the column still as list
+mtcars[[4]] # slected the column as vector
+
+typeof(mtcars[4])  # list
+typeof(mtcars[[4]])  # vector
+
+mtcars[['hp']]
+mtcars$hp
+#NOTICE the difference above:
+#mtcars[4] returns a column slice
+#mtcars[['hp']]returns the vector of values in that column
+
+hp_df = mtcars[4]
+hp_df
+b=mtcars[[4]]
+b
+names(hp_df )
+names(b)   # returns null, as it is a vector
+names(hp_df ) == 'hp'
+
+hp3 = mtcars["hp"]
+hp3
+typeof(hp3)
+
+names(mtcars)
+# mtcars[4] is the same as mtcars['hp'] in the mtcars dataset
+hp_df2 = mtcars['hp']
+hp_df==hp_df2
+
+mtcars[[1]]==mtcars$mpg  #vector
+mtcars[1]==mtcars['mpg']  # list
+
+mpg_df = mtcars['mpg']
+names(mpg_df)
+stopifnot( names(mpg_df ) == 'mpg')
+
+
+df = mtcars[c('mpg', 'disp')]  # this is a way to get a subset, which only include                                  some columns
+df9 = mtcars[,c('mpg', 'disp')] 
+
+df==df9
+
+df1 = mtcars['mpg']
+df2 = mtcars ['disp']
+
+df3= cbind(df1,df2)
+
+df3==df  # the same 
+names(df3)
+stopifnot( names(df) == c('mpg', 'disp') )
+
+#With two scalar arguments, the [] operator can select a single element in the dataframe
+#The first argument selects the row, the second the column
+# three different methods to get a single item
+names(mtcars)
+
+mtcars[1,3]  # this is only select one element
+head(mtcars)
+mtcars[c("mpg","disp")]
+head(mtcars,1)
+stopifnot( mtcars[1,3] == 160 )
+
+stopifnot( mtcars[1,"disp"] == 160 )
+mtcars[1,"disp"]
+
+stopifnot( mtcars["Mazda RX4", "disp"] = 160 )
+mtcars["Mazda RX4", "disp"]
+
+#If the first argument is an index vector (a list of substricts, fieldnames, 
+#or logical indexes) and the second is not, then a vector is returned.
+head(mtcars,3)
+mtcars[1:3,'mpg'] 
+stopifnot( mtcars[1:3,'mpg'] == c(21.0, 21.0, 22.8) )
+
+#If the second argument is a vector (a list of substricts, fieldnames, or logical indexes) 
+#arguments, then [] again returns a dataframe with the selected rows.
+mtcars["Mazda RX4", c("gear", "carb")] 
+print( mtcars["Mazda RX4", c("gear", "carb")] )
+#           gear carb
+# Mazda RX4    4    4
+
+mtcars["Mazda RX4", c("gear", "carb")]
+
+mtcars[1:2, c("gear", "carb")] 
+print( mtcars[1:2, c("gear", "carb")] )
+#               gear carb
+# Mazda RX4        4    4
+# Mazda RX4 Wag    4    4
+
+#If the second argument is omitted, all fieldnames are included.
+mtcars["Mazda RX4", ]
+print( mtcars["Mazda RX4", ] )
+#           mpg cyl disp  hp drat   wt  qsec vs am gear carb
+# Mazda RX4  21   6  160 110  3.9 2.62 16.46  0  1    4    4
+
+
+#Logical indexing can be a powerful tool for extracting subsets of data.
+#NOTE: POWERFUL
+print( mtcars[mtcars['hp'] >= 300,] )
+mtcars[mtcars['hp'] >= 300,] 
+summary(mtcars$hp)
+#               mpg cyl disp  hp drat   wt qsec vs am gear carb
+# Maserati Bora  15   8  301 335 3.54 3.57 14.6  0  1    5    8
+
+#For more complex logic, the subset function is more elegant.
+# note: subset is more ELEGANT when COMPLEXT LOGIC
+subset(mtcars, hp >= 160 & mpg >= 18)
+print( subset(mtcars, hp >= 160 & mpg >= 18) )
+#                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+# Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+# Pontiac Firebird  19.2   8  400 175 3.08 3.845 17.05  0  0    3    2
+# Ferrari Dino      19.7   6  145 175 3.62 2.770 15.50  0  1    5    6
+
+```
+motor trend cars playground
+```{r}
+#Implement functions below avoiding the use of for loops wherever possible.
+#Please read the code and the comments, then experiment with the code to test 
+#any points that remain unclear.  When you  finished experimenting, 
+#************remove/fix any****************
+#code that generates errors and click submit.
+
+#In each case, you should assume that the dataframe argument has the same 
+#fields as the mtcars data set that comes with R.
+
+#Note: On submit, your code will be tested on a dataframe with same format
+#but different data from mtcars.
+
+#Returns a scalar value equal to the mean mpg rating in the dataframe
+meanMPG = function(df){
+  return (mean(df$mpg))
+}
+
+mean(mtcars$mpg)
+mpg_mean = meanMPG(mtcars)
+mpg_mean
+a=write(paste("mpg", mtcars$mpg), file="a.csv")  # save someting to a csv file
+b=read.csv("a.csv")
+
+abs(mpg_mean - 20.09) < 0.1
+stopifnot(abs(mpg - 20.09) < 0.1)
+
+#Returns a new dataframe that includes a new column, one that gives the
+#power-ratio, i.e. hp/wt.
+includePR = function(df){
+  df$pr = df$hp/df$wt
+  return (df)
+}
+df = includePR(mtcars)
+head(df,4)
+df$pr
+
+# werid this test is not correct
+("pr" %in% colnames(df))
+    && (df["Maserati Bora","pr"] == df["Maserati Bora","hp"] / df["Maserati Bora", "wt"])
+
+stopifnot(("pr" %in% colnames(df))
+    && (df["Maserati Bora","pr"] == df["Maserati Bora","hp"] / df["Maserati Bora", "wt"]))
+
+#Returns a vector of the names of the cars that have a value of qsec at most
+#max_qsec and a mpg rating of at least min_mpg
+fastButEfficient = function(df, max_qsec, min_mpg){
+}
+
+stopifnot(sort(fastButEfficient(mtcars, 16, 15)) == sort(c("Ford Pantera L", "Ferrari Dino", "Maserati Bora")))
+
+
+```
+
+
+
+
+factors playground
+```{r}
+#Please read the code and the comments, then experiment with the code to test 
+#any points that remain unclear.   When you  finished experimenting, 
+#*****remove/fix any*******
+#code that generates errors and click submit.
+
+#Suppose that one column of a data set captures the season of the year
+season_column = c("summer", "winter", "fall", "winter", "spring", "fall")
+season_column
+
+#The season is a categorical variable and so it is advantageous to store it as 
+#a factor.
+season = factor(season_column)
+season
+# [1] summer winter fall   winter spring fall  
+# Levels: fall spring summer winter
+
+#Internally, a factor stores a vector of levels containing the distinct
+#values the variable takes on.
+levels(season)
+# "fall"   "spring" "summer" "winter"
+
+#and vector of integers indicating which value is in each index
+as.numeric(season)
+# [1] 3 4 1 4 2 1
+
+#Thus, 
+stopifnot(levels(season)[as.numeric(season)] == season_column) 
+#(Actually, the 'as.numeric' part isn't necessary here.)
+levels(season)[as.numeric(season)]
+season_column
+levels(season)[as.numeric(season)] == season_column
+
+#To give the categories an ordering, we add additional parameters to the factor 
+#function
+season = factor(season_column, levels = c("spring", "summer", "fall", "winter"), order = TRUE)
+
+season
+# [1] summer winter fall   winter spring fall  
+# Levels: spring < summer < fall < winter
+
+#factor variables allow you to make use of powerful built-in functions.
+#Consider the iris dataframe, a built-in data set
+head(iris)
+print (head(iris))
+#   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+# 1          5.1         3.5          1.4         0.2  setosa
+# 2          4.9         3.0          1.4         0.2  setosa
+# 3          4.7         3.2          1.3         0.2  setosa
+# 4          4.6         3.1          1.5         0.2  setosa
+# 5          5.0         3.6          1.4         0.2  setosa
+# 6          5.4         3.9          1.7         0.4  setosa
+
+#As
+ls.str(iris)
+
+str(iris)
+#shows, Species is stored as a factor
+
+# Petal.Length :  num [1:150] 1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+# Petal.Width :  num [1:150] 0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+# Sepal.Length :  num [1:150] 5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+# Sepal.Width :  num [1:150] 3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+# Species :  Factor w/ 3 levels "setosa","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...
+
+#This makes it convenient to use R's aggregate function to compute the median
+#petal length.
+median_petal_lengths = aggregate(iris["Petal.Length"], by = iris["Species"], FUN=median)
+#      Species Petal.Length
+# 1     setosa         1.50
+# 2 versicolor         4.35
+# 3  virginica         5.55
+
+median_petal_lengths = aggregate(iris["Petal.Length"], by = iris["Species"], FUN=sum)
+median_petal_lengths
+median_petal_lengths$Petal.Length=median_petal_lengths$Petal.Length[order(median_petal_lengths$Petal.Length)]
+median_petal_lengths$Petal.Length
+
+# order the dataframe by value of one column
+median_petal_lengths[order(median_petal_lengths$Petal.Length),]
+median_petal_lengths
+
+
+# there is bug and this is the correct one
+iris_subset=iris[which(iris$Species== "setosa" & 
+                             iris$Petal.Length == 1.5),]
+
+dim(iris_subset)
+iris_subset2=subset(iris,iris$Species== "setosa" & iris$Petal.Length == 1.5)
+dim(iris_subset2)
+iris_subset==iris_subset2
+
+
+stopifnot(median_petal_lengths[which(median_petal_lengths[["Species"]] == "setosa"), "PetaL.Length"] == 1.5)
+
+median_petal_lengths[which(median_petal_lengths[["Species"]] == "setosa"), "PetaL.Length"] == 1.5
+
+```
+R debug diamond
+```{r}
+#Implement functions below avoiding the use of for loops wherever possible.
+
+#Please read the code and the comments, then experiment with the code to test 
+#any points that remain unclear.  When you  finished experimenting, 
+#*****remove/fix any*******
+#code that generates errors and click submit.
+
+#In each case, you should assume that the dataframe argument has the same 
+#fields as the diamonds data set that comes with ggplot2.
+
+#Don't remove these lines!
+?methods
+library(methods)
+library(ggplot2)
+data(diamonds)
+
+#Use help(diamonds) to learn about the dataset.
+
+head(diamonds)
+median_price = aggregate(diamonds["price"], by = diamonds["cut"], FUN=median)
+median_price
+max(median_price$price)
+max_median_price_one = median_price[which(median_price$price ==3282.0),]
+max_median_price_one
+max_median_price_one$cut
+max_median_price_one[c("cut","color","clarity")]
+
+
+#Returns the character (string) of the cut that has the greatest median price
+cutWithGreatestMedianPrice = function(df){
+  median_price = aggregate(df["price"], by = df["cut"], FUN=median)
+   max_median_price_one = median_price[which(median_price$price ==max(median_price$price)),]
+   return (max_median_price_one$cut)
+}
+cutWithGreatestMedianPrice(diamonds)
+
+cutWithGreatestMedianPrice(diamonds) == "Fair"
+stopifnot(cutWithGreatestMedianPrice(diamonds) == "Fair")
+print(cutWithGreatestMedianPrice(diamonds))
+
+#Returns the list with the labels cut color clarity, price 
+#the containing the cut,color,clarify combination that has the 
+#greatest median price
+
+head(diamonds)
+
+median_price = aggregate((subset(diamonds, cut=="Fair"))["price"], by = (subset(diamonds, cut=="Fair"))["color"], FUN=median)
+median_price
+max_median_price_one = median_price[which(median_price$price ==max(median_price$price)),]
+   print (max_median_price_one$color)
+
+subset(diamonds, cut=="Fair")
+
+head(diamonds)
+
+median_price = aggregate((subset(diamonds, cut=="Fair" & color == "H"))["price"], by = (subset(diamonds, cut=="Fair"& color =="H"))["clarity"], FUN=median )
+
+comboWithGreatestMedianPrice = function(df){
+   median_price = aggregate(subset(df, df$cut=="Fair")["price"], by = df["color"], FUN=median)
+   median_price = aggregate((subset(df, df$cut=="Fair"))["price"], by = (subset(df, cut=="Fair"))["color"], FUN=median)
+   max_median_price_one = median_price[which(median_price$price ==max(median_price$price)),]
+   selected_color=(max_median_price_one$color)
+   
+   median_price = aggregate((subset(df, df$cut=="Fair" & df$color ==selected_color))["price"], by = (subset(df, df$cut=="Fair"& df$color ==selected_color))["clarity"], FUN=median)
+   max_median_price_one = median_price[which(median_price$price ==max(median_price$price)),]
+   selected_clarity=(max_median_price_one$clarity)
+   
+   finalSet = subset(df, df$cut=="Fair" & df$color == selected_color & df$clarity==selected_clarity)
+   
+   return (finalSet)
+}
+
+x = comboWithGreatestMedianPrice(diamonds)
+x["cut"] == "Good" && x["color"] == "D" && x["clarity"] == "IF" && x["price"] == 15081
+
+stopifnot(x["cut"] == "Good" && x["color"] == "D" && x["clarity"] == "IF" && x["price"] == 15081)
+
+print(x["cut"])
+print(x["color"])
+print(x["clarity"])
+print(x["price"])
+```
+
+lesson 2
+
+```{r}
+#****************************************
+# base function
+# title function
+#grid funciton
+#legend function
+#lines function
+#***********************************************
+
+#************************
+#qplot function
+#ggplot function
+
+```
+strip plot faithful
+```{r}
+data(faithful)
+head(faithful)
+# x is the index of the vector and y is the value at the corresponding index
+plot(faithful$eruptions, xlab="sample number", ylab= "eruption times(min)",
+     main="Old Faithful Eruption Times")
+
+#see the density of eruption
+ggplot(faithful, aes(eruptions))+
+  geom_density()
+#see the relationship between eruption and waiting
+ggplot(faithful, aes(eruptions,waiting))+
+  geom_smooth()
+```
+
+histgram faithful
+```{r}
+library(ggplot2)
+# in qplot, the histgramTis the DEFAULT, IF ONLY ONE PARAMETER is passed
+qplot(x=waiting, 
+      data=faithful,
+      binwidth =3,
+      main = "Waiting time to next eruption(min)")
+
+ggplot(faithful, aes(x=waiting)) +
+  geom_histogram(binwidth=1)
+
+
+```
+
+
+```{r}
+data("faithful")
+library(ggplot2)
+ggplot(faithful, aes(x=waiting, y=..density..))+
+  geom_histogram(binwidth=4)
+```
+
+line plot # shows y is a function of x
+mtcars set
+```{r}
+data(mtcars)
+
+```
+
+line plots demon
+```{r}
+library(ggplot2)
+x=seq(-2,2,length.out=30)
+# see how easily to get y
+y=x^2
+qplot(x,y,geom ="line") #line plot
+qplot(x,y,geom=c("point","line")) # line and point plot
+dataframe= data.frame(x=x,y=y)
+ggplot(dataframe, aes(x=x,y=y))+
+  geom_line()+
+  geom_point()
+
+```
+
+line plot without ggplot
+```{r}
+S=sort.int(mpg$cty,index.return=T)  # return both index and cty value itself
+S
+S0= sort(mpg$cty)  # return the sorted cty
+S0
+S00= order(mpg$cty)  # return the index
+S00
+S
+names(S)
+SS= data.frame(S)
+head(SS)
+mpg$cty
+?sort.int
+S1=sort.int(mpg$cty)
+S1
+typeof(S1) # this is integer
+S
+typeof(S)  # list
+dim(S)  # null
+dim(S1)
+# x: city mpg
+# ix: indices of sorted values of city mpg
+plot(S$x, # plot sorted city mpg values with a line plot
+     type ="l",
+     lty=2,
+     xlab="sample number(sorted by city mpg)",
+     ylab="mpg")
+lines(mpg$hwy[S$ix], lty=1) # add dashed line of hwy mpg
+# note the use of mpg$hwy[S$ix], to use the hwy according to the index which is ordered from mpg$cty, so the hwy and cty is comparable 
+legend("topleft",c("highway mpg", "city mpg"),
+       lty=c(1,2))
+
+names(mpg)
+
+
+highway.city = mpg[,c("hwy","cty")]
+highway.city.ordered = highway.city[order(highway.city$cty),]
+h.length=length(highway.city$hwy)
+hh = seq(1,h.length,length.out = h.length)
+highway.city.ordered=cbind(highway.city.ordered,hh)
+head(highway.city.ordered)
+ggplot(highway.city.ordered, aes(hh,cty))+
+  geom_point()
+molten.high=melt(highway.city.ordered)
+head(molten.high)
+ggplot(molten.high, aes(value))+
+  geom_point()
+```
+
+
+lesss2
+```{r}
+data(faithful)
+ggplot(faithful, aes(x=waiting, y=..density..))+
+  geom_histogram(alpha=0.3)+  # alpha only in 0 to 1, smaller value transparant
+  geom_density(size=1.5,color="red")  # size is the thickness of the redline
+
+
+?geom_density
+#Computes and draws kernel density estimate, which is a smoothed version of the histogram. This is a useful alternative to the histogram if for continuous data that comes from an underlying smooth distribution.
+
+```
+lesson 2 scatter plot
+one x and its correponding y form a dot in the two dimensional space
+```{r}
+plot(faithful$waiting,
+     faithful$eruptions,
+     pch =17,  #shape, type of marker
+     col=3,  # color
+     cex=1.2,  # the size
+     xlab= "waiting times(min)",
+     ylab="eruption time(min)")
+
+dim(faithful)[1]
+
+ggplot(faithful, aes(waiting, eruptions))+
+  geom_point()
+```
+one dimension data is view by historgram, 
+two dimension data is by scatter plot, line plot
+three dimension data is by adding the third dimension data which is catergorical by adding different lablelling colors
+```{r}
+plot(mtcars$hp,
+     mtcars$mpg,
+     pch=mtcars$am,  # the marker type wil depends on the transmission type
+     xlab="horsepower",
+     cex=1.2,
+     ylab="miles per gallon",
+     main="mpg vs. hp by transmission")
+legend("topright", c("automatic","manual"),pch=c(0,1))  # the order is seemd to be dtermined by test out
+
+summary(mtcars$am)
+
+ggplot(mtcars, aes(hp,mpg))+
+  geom_point(aes(color=am))
+```
+changing marker size in a scatter plot
+use the marker size to reflex the third variable
+```{r}
+qplot(x=wt,
+      y=mpg,
+      data=mtcars,
+      size=cyl,  # this is the third variable, which is categorical
+      main="MPG vs. weight (x1000 lbs) by cylinder")
+
+ggplot(mtcars, aes(hp,mpg))+
+  geom_point(aes(size=cyl))
+
+```
+noisy data
+The first blank specifies the x axis variable. 
+The second blank specifies the y axis variable.
+The fourth blank is the plot title.
+The fifth blank is the specific method to smooth the curve.
+The grader only checks for one method, you may have a correct method, but the grader might mark it wrong. Try loess. 
+The answer to the eighth blank is for the switch to graph the standard error. TRUE or FALSE.
+```{r}
+data(mtcars)
+qplot(disp,mpg,data=mtcars,
+      main="MPG vs. Eng. Displacement")+
+      stat_smooth(method="loess", # the method used to compute the smooth line
+                  degree=0, #the degree of parameter associated with local smoothing operation, locally constant regression?
+                  span=0.2, # related to the banwith in the curnel smoothing
+                  se=TRUE)
+
+?stat_smooth
+
+ggplot(mtcars, aes(disp,mpg))+
+  geom_smooth()
+```
+facets: allows us to veiw more than two dimensions
+
+```{r}
+# modify the mtcars dataframe to have new coloumns with more appropriate names for better axes labelling
+library(ggplot2)
+head(mtcars)  # in the original, all are numbers, change some numbers, so it will be more discriptive, two NEW COLUMNS are created
+str(mtcars)
+dim(mtcars)  # 32 11
+mtcars$am==0 #Logical vectors and vectors of indices can used to select 
+#a subset of entries in a vector
+mtcars$amf[mtcars$am==0] ='automatic'
+mtcars$amf[mtcars$am==1] ='manual'
+mtcars$vsf[mtcars$vs==0] ='flat'
+mtcars$vsf[mtcars$vs==1] ='V-shape'
+dim(mtcars)
+#32 13
+
+# this is two graph in horizontal, it is just like added another row, row action is alway the second one
+mtcars$amf
+
+data("mtcars")
+mtcars$am
+levels(mtcars$am) = c("low","high")
+qplot(x=wt,
+    y=mpg,
+    facets=.~amf, # layout in horizontal, autmatic or manual, the dot at the left can be omitted, and the results still seems right, but the quiz will not let you pass
+    data=mtcars)
+
+names(mtcars)
+ggplot(aes(wt,mpg), data=mtcars)+
+ geom_point()+
+ facet_wrap(~amf)
+  
+
+# this is two graph in veritcal
+# notice the dot after the telder can not be omitted, it indicates that there is only one column
+names(mtcars)
+mtcars$vs
+qplot(x=wt,
+    y=mpg,
+    facets=vsf~.,
+    data=mtcars)
+
+```
+facet in both horizontal and vertical directions
+```{r}
+head(mtcars)
+qplot(x=wt,
+    y=mpg,
+    facets=vsf~amf, # vsf is for flat or Vshape, amf for manual or automatic
+    data=mtcars)
+
+ggplot(mtcars, aes(wt,mpg))+
+  geom_point()+
+  facet_grid(vsf~amf)
+```
+ggpairs
+
+```{r}
+library(ggplot2)
+data(mpg)
+head(mpg)
+mpg$displ
+summary(mpg$displ)
+
+DF=mpg[,c('cty','hwy','displ')]  #select part of the dataframe
+library(GGally) #this ispackage that has ggpair function in it, no ggpair package
+ggpairs(DF)
+# the diagnoal is the smooth histogram
+
+DF2 = mpg[,c('cyl','hwy', 'cty')]
+head(DF2)
+ggpairs(DF2)
+summary(mpg$cyl)
+# the diagnoal is smooth histgram, kind of like density graph
+```
+contour plots
+```{r}
+# wanted to know the location of the hill as well as the height
+x_grid = seq(-1,1,length.out=100)
+y_grid=x_grid
+R=expand.grid(x_grid, y_grid)
+R
+names(R) = c('x', 'y') # give R names, proper name is important when use ggplot
+R$z = R$x^2 + R$y^2 # add another column to the R dataframe
+ggplot(R,aes(x=x,y=y, z=z))+  # aes can be used with 3 variables
+  stat_contour()  # contour specific
+```
+box plot are autantive to hisgraphm, but are usually lossy, loss information, but it has quantile info wich hisgram can not provide
+R percentile, 0.R quantile
+
+```{r}
+data(mpg)
+head(mpg)
+
+ggplot(mpg, aes("", hwy))+
+  geom_boxplot()+
+  coord_flip()+
+  scale_x_discrete("")  # notice, it is just blank in the bracket
+```
+
+mutiple boxplot
+```{r}
+ggplot(mpg,
+       aes(reorder(class,-hwy,median), hwy))+  # compute mile per gallon for each class,order tham
+         geom_boxplot()+    # have to remember, can not recall any of this
+         coord_flip()+
+         scale_x_discrete("class")  # what is this for?
+?reorder
+```
+qqplot examples
+```{r}
+D= data.frame(samples = c(rnorm(200,1,1),
+                          rnorm(200,0,1),
+                          rnorm(200,0,2)))
+dim(D)
+D$parameter[1:200]  = 'N(1,1)'; # give a paramter, this can be used in graph
+                                # created another column into the data frame
+D$parameter[201:400] = 'N(0,1)';
+D$parameter[401:600] = 'N(0,2)';
+head(D)
+qplot(samples,
+      facets= parameter~.,
+      geom= 'histogram',
+      data=D
+      )
+# qqplot against theretical normal distribution
+ggplot(D, aes(sample=samples)) +
+  stat_qq() +
+  facet_grid(.~parameter)
+
+```
+qqplot another example
+```{r}
+x_grid = seq(-6,6,length.out=200)
+R = data.frame (density = dnorm(x_grid,0,1))
+R$tdensity = dt(x_grid, 1.5)
+R$x = x_grid
+ggplot(R, aes(x=x, y=density)) +
+  geom_area(fill=I('grey'))+
+  geom_line(aes(x=x, y=tdensity)) +
+  labs(title = "N(0,1) (shades) and t-disttribution (1.5 dof)")
+
+
+x_grid = seq(-6,6,length.out=200)
+R = data.frame(density=dnorm (x_grid,0,1))
+R$samples = rnorm (200,0,1)
+pm = list(df=1.5)
+ggplot(R, aes(sample = samples)) +
+  stat_qq(distribution =qt, dparams =pm)
+# x is the real sample
+# y is the theretical normal distribution
+
+```
+
+
+chapter 3
+What does mean(movies$length) mean?
+What does mean(movies$budget) mean?
+What does mean(!is.na(movies$budget)) mean?
+What dataset do we want to return?
+```{r}
+library(ggplot2)
+install.packages("ggplot2movies")  # one-time only - do this if you have not done so already
+library(ggplot2movies)  # once per R session
+data(movies)
+
+data("movies")
+head(movies)
+mean(movies$length)
+mean(movies$budget) # because the NA value, return NA
+mean(movies$budget,na.rm=TRUE)
+mean(is.na(movies$budget))  # frequency of missing budget, so high!!
+movies$budget
+moviesNoNA = na.omit(movies) # returns a dataset with all missing data removed
+
+```
+
+
+scatter plot with the smooth line
+```{r}
+library(ggplot2movies)
+moviesNoNA = na.omit(movies)
+qplot(rating, budget, data=moviesNoNA, size=I(1.2))+
+  stat_smooth(color="red", size=I(2),se=F)
+
+ggplot(moviesNoNA, aes(rating,budget))+
+  geom_smooth(aes(color="red"))
+
+
+
+```
+compare two model from finance, can not find Ecdat
+```{r}
+install.packages("Ecfun")
+install.packages("Ecdat", repos="http://R-Forge.R-project.org", dependencies = TRUE)
+library(Ecdat)
+data(SP500, package='Ecdat')
+qplot(r500,
+      main="Histogram of log(P(t)/P(t-1) for SP500 (1981-91)",
+      xlab="log returns",
+      data=SP500)
+```
+
+wnsorize
+```{r}
+install.packages("perry", dependencies = TRUE)
+library("perry")
+install.packages("robustHD")
+
+library(robustHD)
+install.packages("robustbase")
+#Create the data to be Winsorized:
+originalData <- c(1000.0000000  ,  1.8410249 ,  -0.7923505 ,   0.1776514  ,  0.4002135)
+#Print the data to be Winsorized:
+print(originalData[1:5])
+print(winsorize(originalData[1:5]))
+
+
+```
+std Mean
+```{r}
+original_data = rnorm(20)
+original_data[1] = 1000
+sorted_data = sort(original_data)
+
+stdMean = function()
+    {
+    original_data = rnorm(20)
+    typeof(original_data)  # double vector
+    original_data[1] = 1000
+    sorted_data = sort(original_data)
+    filtered_data= original_data[3:18]
+    lower_limit = mean(filtered_data) - 5*sd(filtered_data)
+    upper_limit = mean(filtered_data) + 5*sd(filtered_data)
+    # this is very smart, created INDICATOR ARRAY, not INDICES
+    # i did the thing wrong, but the grader still let me pass
+    #
+    not_outlier_ind = (lower_limit < original_data) & (original_data<upper_limit)
+    print(not_outlier_ind)
+    data_w_no_outliers = original_data[not_outlier_ind]
+    #print the original data that has all outliers removed
+    print(data_w_no_outliers)
+    }
+stdMean()
+```
+wrong solution to the quiz
+```{r}
+original_data = rnorm(20)
+original_data[1] = 1000
+sorted_data = sort(original_data)
+
+stdMean = function()
+    {
+    selected_data = sorted_data[50,950]
+    stand_devi=sd(selected_data)
+    mean = mean(selected_data)
+    data_w_no_outliers=sorted_data[sorted_data >mean - 5*stand_dev]
+    print(data_w_no_outliers)
+    }
+
+stdMean()
+```
+correct myself to see if it is working or not
+```{r}
+  original_data = rnorm(20)
+original_data[1] = 1000
+sorted_data = sort(original_data)
+
+stdMean = function()
+    {
+    selected_data = sorted_data[3:18]
+    stand_devi=sd(selected_data)
+    mean = mean(selected_data)
+    
+    index = which((sorted_data>mean -5*stand_devi) &  (sorted_data<mean +5*stand_devi))
+    data_w_no_outliers = sorted_data[index]
+    
+    print(data_w_no_outliers)
+    }
+
+stdMean()
+
+```
+
+diamonds data set
+```{r}
+data(diamonds)
+diamonds[1:10, 1:8]
+dim(diamonds)[1]
+#draw 1000 samples from the total of 53940 samples
+diamondsSubset = diamonds[sample(dim(diamonds)[1],1000),]
+qplot(price, data=diamondsSubset)
+
+a= seq(1,100,length.out = 100)
+b=sample(100,10)
+b
+```
+diamonds subset histogram
+```{r}
+?qplot
+qplot(log(price), size=I(0.1), data=diamondsSubset)
+qplot(log(price), data=diamondsSubset) 
+
+```
+diamonds log log transformation
+```{r}
+library(ggplot2)
+qplot(log(carat),
+      log(price),
+      size=I(1), # shows the size of the dots, the default one is bigger than 1
+      data=diamondsSubset)
+# if i is deleted, no good,dots too big
+qplot(log(carat),
+      log(price),
+      size=1, # shows the size of the dots, the default one is bigger than 1
+      data=diamondsSubset)
+
+```
+the animal data set
+```{r}
+library(MASS)
+Animals[1:12,]
+head(Animals)
+qplot(log(brain),log(body),data=Animals)
+
+```
+another way to do the up
+```{r}
+qplot(brain, body, log='xy', data=Animals)  # remember log='xy'
+```
+cut function for bin
+```{r}
+
+```
+
+
+
+shuffling
+```{r}
+D= array(data=seq(1,20,length.out=20), dim=c(4,5)) #method create an array
+D_shuffled=D[sample(4,4),]  # sample(4,4) is permuation of data, as the default is without any replacement
+D_shuffled
+
+```
+partitinoning
+```{r}
+D=array(data=seq(1,20,length.out=20),dim=c(4,5))
+D3=D[sample(dim(D)[1], floor(4*0.75)),]
+D4=D[sample(dim(D)[1], floor(4*0.25)),]
+D3
+D4
+
+# another way is as following
+D=array(data=seq(1,20,length.out=20),dim=c(4,5))
+rand_perm= sample(4,4)   # get the index in the vector
+rand_perm
+typeof(rand_perm)  # integer vector
+first_set_of_indices = rand_perm[1:floor(4*0.75)]
+first_set_of_indices
+second_set_of_indices = rand_perm[(floor(4*0.75)+1):4]
+second_set_of_indices
+D1 = D[first_set_of_indices,]
+D2 = D[second_set_of_indices,]
+D1
+D2
+
+```
+reshaping data
+```{r}
+#where is the smiths data, in reshape2
+library(plyr)
+library(reshape2)
+data(smiths)
+head(smiths)
+# melt accept wide format and converts into TALL data, like melt ice cube into icical
+?melt
+smiths_tall = melt(smiths,id=1)  # id kind of select which row will act the key
+# the first column will used as unique identifier
+smiths_tall
+
+# how to dcast back?
+```
+acast or dcast is the reverse of melt: convert tall to wide
+```{r}
+
+```
+
+```{python}
+a=5*5
+
+a
+
+
+```
+
+
+
+
+using tips package, table exploration rather than graph exploration, using reshape2
+```{r}
+#where is tip data
+data(tips)
+head(tips,1)
+
+qplot(total_bill, 
+      tip,
+      facets = sex~time, # row is of sex, and time is of column
+      size=I(1.5),
+      data=tips )
+```
+smoker_tip example
+```{r}
+head(tips)
+names(tips)
+dim(tips)
+tipsm=melt(tips, id=c("sex","smoker","day","time","size"))
+head(tipsm) # this is tall data
+dim(tipsm)
+names(tipsm)
+# notice tipsm have two things in the variable column, one is total one is tip
+#dcast is into wide dataframe
+dcast(tipsm, # Mean of measurement variables broken by sex
+      sex~variable, # sex is as row, and vairalbe(total and tips) is as column
+      fun.aggregate = mean)
+# as there are two variables, so the fun.aggregation works on two variables, and therefore thare will be two rows
+
+#looks like dcast has to use with aggregate, if I do following, it tells me that default of aggregate is length
+dcast(tipsm, # Mean of measurement variables broken by sex
+      sex~variable) # sex is as row, and vairalbe(total and tips) is as column
+
+# number of occurances for meansurement variables broken by sex
+dcast(tipsm,
+      sex~variable,
+      fun.aggregate = length) # the length of tips and total are the same
+# number of mearement, the visit/pay number of female and male
+```
+average total bill and tip for different times, just change the thing(sex) left of ~ to time
+```{r}
+dcast(tipsm,
+      time~variable, # see what is diffence between dinner and lunch in a table
+      fun.aggregate = mean)
+```
+
+breakdown for sex and time:
+```{r}
+dcast(tipsm,
+      sex+time~variable,
+      fun.aggregate = length)
+
+dcast(tipsm,
+      sex+time~variable, # compare all ways the visits # for sex and time
+      fun.aggregate = length)
+```
+simlar to above, but with mean and added margins
+margin means getting the grand total
+```{r}
+dcast(tipsm,
+      sex+time~variable,
+      fun.aggregate = mean,
+      margins =TRUE) # means grand total for Female (both lunch and dinner)
+```
+split array combine
+the Plyr package
+```{r}
+library(plyr)
+data(baseball)
+dim(baseball)
+names(baseball)
+str(baseball)
+typeof(baseball)
+
+#count number of players recorded for each year
+bbPerYear = ddply(baseball, "year", "nrow")# nrow counts the number of rows aggregated by year
+# apply the function "nrow" which counts the number of rows, then aggregate the results into a dataframe, which corresponds to how many players in each year
+bbPerYear
+head(bbPerYear)
+typeof(bbPerYear)
+bbPerYear["year"]
+
+bbPerID = ddply(baseball, "id", "nrow")
+head(bbPerID)
+?ddply
+```
+q plot on the bbPerYear data frame
+```{r}
+qplot(x=year, y=nrow,
+      data=bbPerYear, geom= "line",
+      ylab="name of palyer seasons")
+```
+compute mean rbi (batting attempt resulting in runs) for all years. Summarize is the apply function, which takes as argument a function that compute the rbi mean
+```{r}
+head(baseball,1)
+bbMod = ddply(baseball, 
+              "year", # split the data into pieces by year
+              summarize, # the apply function is summarize
+              mean.rbi = mean(rbi, na.rm=TRUE)) # apply function to each pieces
+#na.rm remove rbi or null from mean calculation
+
+head(bbMod)
+qplot(x=year, y=mean.rbi, data=bbMod,
+              geom= "line", ylab="mean RBI")
+```
+baseball graph 2
+```{r}
+# add a column caree year which measures the number of years passed since each player started batting
+head(baseball,10)
+subset(baseball, id=="ansonca01")
+bbMod2 = ddply(baseball,
+               "id",
+               transform, #the function is transform
+               career.year = year - min(year)+1)
+head(bbMod2,1)
+# sample a random subset 3000 rows to avoid over-plotting
+bbSubset = bbMod2[sample(dim(bbMod2)[1],3000),]
+head(bbSubset)
+qplot(career.year,
+      rbi,
+      data=bbSubset,
+      size=I(0.8),
+      geom="jitter",
+      ylab = "RBI",
+      xlab = "years of playing") +
+  geom_smooth(color="red", se=F, size=1.5)
+```
+ozone dataset
+it is a three dimensional dataset
+```{r}
+library(plyr)
+data("ozone")
+head(ozone)
+str(ozone)
+dim(ozone)
+ozone
+typeof(ozone)
+str(ozone)
+
+#3 dimensional data
+latitude.mean =aaply(ozone, 1, mean) #split by the first column, which is latitude
+#aapply, the input data is array, and the output is array, 1 means data in the first dimension
+longitude.mean =aaply(ozone, 2, mean)
+time.mean =aaply(ozone, 3, mean)
+longitude =seq(along=longitude.mean)# sequece used to express x xses
+qplot(x=longitude,
+      y=longitude.mean,
+      ylab="mean ozne level",
+      geom= "line")
+
+?seq
+latitude =seq(along=latitude.mean)# sequece used to express x xses
+qplot(x=latitude,
+      y=latitude.mean,
+      ylab="mean ozne level",
+      geom= "line")
+
+months = seq(along=time.mean)
+qplot(x=months,
+      y=time.mean,
+      ylab="mean ozne level",
+      xlab= "months since Jan 19",
+      geom= "line")
+```
+chapter 4
+```{r}
+install.packages("aod")
+library(aod)
+?aod
+library(ggplot2)
+library(Rcpp)
+?Rcpp
+
+mydata <- read.csv("http://www.ats.ucla.edu/stat/data/binary.csv")
+## view the first few rows of the data
+head(mydata)
+
+summary(mydata)
+
+#To get the standard deviations, we use sapply to apply the sd function to each variable in the dataset.
+sapply(mydata, sd)
+?sapply
+
+## two-way contingency table of categorical outcome and predictors
+## we want to make sure there are not 0 cells
+xtabs(~ admit + rank, data = mydata)
+?xtabs
+
+#we convert rank to a factor to indicate that rank should be treated as a categorical variable.
+mydata$rank <- factor(mydata$rank)
+head(mydata)
+?glm
+mylogit <- glm(admit ~ gre + gpa + rank, data = mydata, family = "binomial")
+
+summary(mylogit)
+
+## CIs using profiled log-likelihood
+confint(mylogit)
+#Computes confidence intervals for one or more parameters in a fitted model. 
+?confint
+
+## CIs using standard errors
+confint.default(mylogit)
+
+#We can test for an overall effect of rank using the wald.test function of the aod library. The order in which the coefficients are given in the table of coefficients is the same as the order of the terms in the model. This is important because the wald.test function refers to the coefficients by their order in the model. We use the wald.test function. b supplies the coefficients, while Sigma supplies the variance covariance matrix of the error terms, finally Terms tells R which terms in the model are to be tested, in this case, terms 4, 5, and 6, are the three terms for the levels of rank.
+wald.test(b = coef(mylogit), Sigma = vcov(mylogit), Terms = 4:6)
+
+l <- cbind(0,0,0,1,-1,0)
+wald.test(b = coef(mylogit), Sigma = vcov(mylogit), L = l)
+
+## odds ratios only
+exp(coef(mylogit))
+
+## odds ratios and 95% CI
+exp(cbind(OR = coef(mylogit), confint(mylogit)))
+
+newdata1 <- with(mydata,
+  data.frame(gre = mean(gre), gpa = mean(gpa), rank = factor(1:4)))
+
+## view data frame
+newdata1
+
+newdata1$rankP <- predict(mylogit, newdata = newdata1, type = "response")
+newdata1
+
+newdata2 <- with(mydata,
+  data.frame(gre = rep(seq(from = 200, to = 800, length.out = 100), 4),
+  gpa = mean(gpa), rank = factor(rep(1:4, each = 100))))
+
+newdata3 <- cbind(newdata2, predict(mylogit, newdata = newdata2, type="link", se=TRUE))
+newdata3 <- within(newdata3, {
+  PredictedProb <- plogis(fit)
+  LL <- plogis(fit - (1.96 * se.fit))
+  UL <- plogis(fit + (1.96 * se.fit))
+})
+
+## view first few rows of final dataset
+head(newdata3)
+
+
+ggplot(newdata3, aes(x = gre, y = PredictedProb)) +
+  geom_ribbon(aes(ymin = LL, ymax = UL, fill = rank), alpha = .2) +
+  geom_line(aes(colour = rank), size=1)
+
+```
+
+chapter 5
+```{r}
+library(ggplot2)
+diamSmall = diamonds[sample(1:dim(diamonds)[1],500),]
+M1=lm(price~carat,diamSmall)
+theta = coef(M1)
+theta
+
+ggplot(diamSmall, aes(carat,price))+
+  geom_point()
+
+ggplot(diamSmall, aes(carat,price))+
+  geom_point()+
+  geom_abline(intercept = theta[1], slope=theta[2],size=2,color=I("red"))
+
+predict(M1, data.frame(carat=c(3,4,5)))
+
+summary(M1)
+typeof(summary(M1)) #list
+
+
+# look into more detailed results
+summary(M1)$r.squared
+residuals(M1)
+mean(residuals(M1))
+mean(residuals(M1)^2)
+
+```
+ajusting for non linearlity
+```{r}
+M2 = lm(price~carat+I(carat^2)+I(carat^3),
+        diamSmall)
+theta2 = coef(M2)
+theta2
+X=seq(0,3,length=500)
+Y=theta2[1] +theta2[2]+theta2[3]*X^2+theta2[4]*X^3
+
+D=data.frame(x=X,y=Y)
+ggplot(D,aes(x=X,y=Y))+
+  geom_line(size=2, color=I("red"))+
+  geom_point(data=diamSmall,aes(x=carat,y=price))
+
+summary(M2)$r.squared
+mean(residuals(M2)^2)
+           
+
+```
+
+add an explanatory variable
+```{r}
+M3=lm(price~carat+color, diamSmall)
+theta3= coef(M3)
+summary(M3)$r.squared
+mean(residuals(M3)^2)
+
+```
+log log transformation
+```{r}
+M4 = lm(log(price)~log(carat),diamSmall)
+theta4=coef(M4)
+theta4
+ggplot(diamSmall,aes(log(carat),log(price)))+
+  geom_point()+
+  geom_abline(intercept=theta4[1],slope=theta4[2],size=2,color=I("red"))
+
+summary(M4)$r.squared
+mean(residuals(M4)) # the residule is not comparable to the others, as they are in different scales
+```
+chapter 6
+```{r}
+#Create a model summary given the following information. 
+
+library(MASS)
+# mass if for "Mordern Applied and Datasets with S"
+N = 20      # Sample size #not sure what this is doing
+x1 = runif(n=N)
+x2 = runif(n=N)
+x3 = runif(n=N)
+x3c = 10*x1 + x3
+ep = rnorm(n=N)
+y = x1 + x2 + ep
+
+#TODO: add the commands to 
+## OLS fit of 3-variable model using correlated x3.
+olsc<- lm(y~x1+x2+x3c)
+summary(olsc)
+```
+the runif function
+```{r}
+# runif() function can be used to simulate n indepdent uniform random variables
+# generate 5 uniform numbers on [0,1] 
+runif(5)  
+# genereate 3 unifrom numbers on [1.2, 5.8]
+runif(3,1.2,5.8)
+# assingn 100 independet uniform numbers on the interval [1,5] to a vector object called V
+V=runif(100,1,5)
+hist(V)
+
+
+```
+
+
+ridge regression quiz
+```{r}
+ridgec <- lm.ridge(y ~x1+x2+x3c, lambda =seq(0,0.1,0.001))
+summary(ridgec)
+
+```
+lasso plots
+```{r}
+install.packages("glmnet", repos = "http://cran.us.r-project.org")
+
+library(glmnet)
+```
+mtcars lasso
+```{r}
+#Libraries needed to create the plot
+library (glmnet)
+library(ggplot2)
+install.packages("robustHD")
+
+#Open a device called plot.png
+png(filename="plot.png")
+data(mtcars)
+library(robustbase)
+install.packages("robustHD")
+library(perry)
+library("parallel")
+library("robustHD")
+install.packages("parallel")
+
+#TODO Add command to create the data for the plot
+#Store the data in mtcarsLasso
+
+mtcars[-1]
+mtcarsLasso = glmnet(as.matrix(mtcars[-1]), mtcars[,1])
+
+bbb=as.matrix(mtcars[-1])
+
+#Plot should be displayed below when TEST RUN is selected
+plot(mtcarsLasso, col=1:12, lwd=2)
+legend('bottomleft', legend=names(mtcars)[-1], col=1:12, lty=1, lwd=1)
+
+#Turn off the device
+dev.off()
+
+#Print the values stored in mtcarsLasso
+#These will only be printed when the code is submi
+mtcarsLasso
+```
+ridge regression example
+```{r}
+# RIDGE REGRESSION
+
+# Model is E(Y) = 0 + 1 X1 + 1 X2 + e   with e~N(0,1)
+# Three variables are measured: x1,x2,x3.  
+#  x1 and x1 are U(0,1); x3=10 * X1 + unif(0,1).  
+#   This causes corr(X1,X3)=sqrt(100/101)=0.995.
+# We will fit OLS and ridge regressions to these data, 
+#  use the data to select the "best" constant to add, 
+#  and then evaluate the two regressions on a new test set.
+
+# Ridge regression function, ridge.lm(), is on MASS package
+
+library(MASS)
+
+# Generating the data
+
+set.seed(558562316)
+N <- 20      # Sample size
+
+x1 <- runif(n=N)
+x2 <- runif(n=N)
+x3 <- runif(n=N)
+x3c <- 10*x1 + x3 # New variable
+ep <- rnorm(n=N)
+y <- x1 + x2 + ep 
+
+# OLS fit of 3-variable model using independent x3
+ols <- lm(y~ x1 + x2 + x3)
+summary(ols)
+
+
+# OLS fit of 3-variable model using correlated x3.
+olsc <- lm(y~ x1 + x2 + x3c)
+summary(olsc)
+
+
+# Ridge regression using independent variables
+ridge <- lm.ridge (y ~ x1+x2+x3, lambda = seq(0, .1, .001))
+summary(ridge)
+plot(ridge)
+
+# Ridge regression using correlated variables
+ridgec <- lm.ridge (y ~ x1+x2+x3c, lambda = seq(0, .1, .001))
+plot(ridgec)
+select(ridgec)
+
+# Selection of constant is at endpoint.  Extend endpoint and try again
+ridgec <- lm.ridge (y ~ x1+x2+x3c, lambda = seq(0, 1, .1))
+plot(ridgec)
+select(ridgec)
+
+# Selection of constant is at endpoint.  Extend endpoint and try again
+ridgec <- lm.ridge (y ~ x1+x2+x3c, lambda = seq(0, 10, .01))
+plot(ridgec)
+select(ridgec)
+
+# Final model uses lambda=4.
+ridge.final <- lm.ridge (y ~ x1+x2+x3c, lambda = 4)
+ridge.final
+summary(ridge.final)
+# Create test data and compute predicted values for OLS and ridge.
+#  There's no predict() method for "ridgelm" objects
+
+test <- expand.grid(x1 = seq(.05,.95,.1), x2 = seq(.05,.95,.1), x3=seq(.05,.95,.1))
+mu <- test$x1 + test$x2
+test$x3c <- 10*test$x1 + test$x3
+pred.ols <- predict(ols,newdata=test)   # y ~ X1 + X2 + X3
+pred.olsc <- predict(olsc,newdata=test) # y ~ X1 + X2 + X3c
+pred.ridge <- coef(ridge.final)[1] + coef(ridge.final)[2]*test[,1] + 
+  coef(ridge.final)[3]*test[,2] + coef(ridge.final)[4]*test[,4]
+
+MSPE.ols <- sum((pred.ols - mu)^2)/length(mu)
+MSPE.olsc <- sum((pred.olsc - mu)^2)/length(mu)
+MSPE.ridge <- sum((pred.ridge - mu)^2)/length(mu)
+
+MSPE.ols
+MSPE.olsc
+MSPE.ridge
+
+
+
+```
+
